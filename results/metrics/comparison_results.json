@@ -1,0 +1,38 @@
+{
+  "density": {
+    "Graph A": 0.06868686868686869,
+    "Graph B": 0.044081632653061226,
+    "difference": 0.02460523603380746,
+    "ratio": 1.5581743359521136
+  },
+  "triangles": {
+    "Graph A": 4,
+    "Graph B": 0,
+    "difference": 4,
+    "ratio": Infinity
+  },
+  "diameter": {
+    "Graph A": 12,
+    "Graph B": 18,
+    "difference": -6,
+    "ratio": 0.6666666666666666
+  },
+  "reciprocity": {
+    "Graph A": 1.0,
+    "Graph B": 1.0,
+    "difference": 0.0,
+    "ratio": 1.0
+  },
+  "clustering_coefficient": {
+    "Graph A": 0.045454545454545456,
+    "Graph B": 0.0,
+    "difference": 0.045454545454545456,
+    "ratio": Infinity
+  },
+  "connected_components": {
+    "Graph A_num_components": 1,
+    "Graph B_num_components": 1,
+    "Graph A_largest_component": 55,
+    "Graph B_largest_component": 50
+  }
+}

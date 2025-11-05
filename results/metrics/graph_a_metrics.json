@@ -1,0 +1,22 @@
+{
+  "density": 0.06868686868686869,
+  "triangles": 4,
+  "connected_components": {
+    "num_components": 1,
+    "largest_component_size": 55,
+    "component_sizes": [
+      55
+    ],
+    "avg_component_size": 55.0
+  },
+  "diameter": 12,
+  "reciprocity": 1.0,
+  "clustering_coefficient": 0.045454545454545456,
+  "degree_distribution": {
+    "avg_degree": 3.709090909090909,
+    "max_degree": 4,
+    "min_degree": 1,
+    "degree_variance": 0.6790082644628099,
+    "degree_std": 0.824019577718157
+  }
+}

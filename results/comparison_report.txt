@@ -1,0 +1,45 @@
+
+# Graph Comparison Report
+Generated on: 2025-11-01 04:08:33
+
+## Graph A: Graph A
+- Nodes: 55
+- Edges: 102
+- Directed: False
+
+## Graph B: Graph B
+- Nodes: 50
+- Edges: 54
+- Directed: False
+
+## Comparative Analysis
+
+### Density
+- Graph A: 0.0687
+- Graph B: 0.0441
+- Difference: 0.0246
+- Ratio: 1.5582
+
+### Triangles
+- Graph A: 4.0000
+- Graph B: 0.0000
+- Difference: 4.0000
+- Ratio: inf
+
+### Diameter
+- Graph A: 12.0000
+- Graph B: 18.0000
+- Difference: -6.0000
+- Ratio: 0.6667
+
+### Reciprocity
+- Graph A: 1.0000
+- Graph B: 1.0000
+- Difference: 0.0000
+- Ratio: 1.0000
+
+### Clustering Coefficient
+- Graph A: 0.0455
+- Graph B: 0.0000
+- Difference: 0.0455
+- Ratio: inf
