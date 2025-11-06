@@ -180,6 +180,112 @@ class GraphAnalyzer:
         self.metrics['degree_distribution'] = analysis
         return analysis
     
+    def compute_assortativity(self) -> float:
+        """
+        Calculate degree assortativity coefficient.
+        Assortativity measures the tendency of nodes to connect to nodes with similar degree.
+        
+        Returns:
+            float: Assortativity coefficient (-1 to 1)
+        """
+        try:
+            assortativity = nx.degree_assortativity_coefficient(self.graph)
+            self.metrics['assortativity'] = assortativity
+            return assortativity
+        except Exception as e:
+            print(f"Warning: Could not compute assortativity: {e}")
+            self.metrics['assortativity'] = 0.0
+            return 0.0
+    
+    def compute_radius(self) -> int:
+        """
+        Calculate the radius of the graph (minimum eccentricity).
+        
+        Returns:
+            int: Graph radius
+        """
+        try:
+            if not nx.is_connected(self.graph.to_undirected()):
+                # For disconnected graphs, compute radius of largest component
+                largest_cc = max(nx.connected_components(self.graph.to_undirected()), key=len)
+                subgraph = self.graph.subgraph(largest_cc)
+                radius = nx.radius(subgraph)
+            else:
+                radius = nx.radius(self.graph)
+            
+            self.metrics['radius'] = radius
+            return radius
+        except Exception as e:
+            print(f"Warning: Could not compute radius: {e}")
+            self.metrics['radius'] = 0
+            return 0
+    
+    def compute_centrality_measures(self) -> Dict:
+        """
+        Compute various centrality measures.
+        
+        Returns:
+            dict: Dictionary containing centrality measures
+        """
+        try:
+            # Degree centrality
+            degree_centrality = nx.degree_centrality(self.graph)
+            avg_degree_centrality = np.mean(list(degree_centrality.values()))
+            max_degree_centrality = max(degree_centrality.values()) if degree_centrality else 0
+            
+            # Betweenness centrality (sample for large graphs)
+            betweenness = {}
+            avg_betweenness = 0.0
+            max_betweenness = 0.0
+            
+            if self.graph.number_of_nodes() < 10000:  # Only compute for smaller graphs
+                betweenness = nx.betweenness_centrality(self.graph)
+                avg_betweenness = np.mean(list(betweenness.values()))
+                max_betweenness = max(betweenness.values()) if betweenness else 0
+            else:
+                # Sample for large graphs
+                sample_nodes = list(self.graph.nodes())[:1000]
+                betweenness = nx.betweenness_centrality(self.graph, k=sample_nodes)
+                avg_betweenness = np.mean(list(betweenness.values()))
+                max_betweenness = max(betweenness.values()) if betweenness else 0
+            
+            # PageRank (if graph is not too large)
+            pagerank = {}
+            avg_pagerank = 0.0
+            max_pagerank = 0.0
+            
+            if self.graph.number_of_nodes() < 100000:
+                pagerank = nx.pagerank(self.graph)
+                avg_pagerank = np.mean(list(pagerank.values()))
+                max_pagerank = max(pagerank.values()) if pagerank else 0
+            
+            analysis = {
+                'degree_centrality': {
+                    'average': avg_degree_centrality,
+                    'max': max_degree_centrality
+                },
+                'betweenness_centrality': {
+                    'average': avg_betweenness,
+                    'max': max_betweenness
+                },
+                'pagerank': {
+                    'average': avg_pagerank,
+                    'max': max_pagerank
+                }
+            }
+            
+            self.metrics['centrality'] = analysis
+            return analysis
+            
+        except Exception as e:
+            print(f"Warning: Could not compute centrality measures: {e}")
+            self.metrics['centrality'] = {
+                'degree_centrality': {'average': 0.0, 'max': 0.0},
+                'betweenness_centrality': {'average': 0.0, 'max': 0.0},
+                'pagerank': {'average': 0.0, 'max': 0.0}
+            }
+            return self.metrics['centrality']
+    
     def detect_communities(self, algorithm: str = 'louvain') -> Dict:
         """
         Detect communities in the graph using various algorithms.
@@ -234,14 +340,19 @@ class GraphAnalyzer:
         """
         print(f"Computing metrics for {self.name}...")
         
-        # Basic metrics
+        # Basic metrics (5 key metrics for conclusions)
         self.compute_density()
         self.count_triangles()
         self.analyze_connected_components()
         self.compute_diameter()
         self.compute_reciprocity()
+        
+        # Additional metrics
         self.compute_clustering_coefficient()
         self.analyze_degree_distribution()
+        self.compute_assortativity()
+        self.compute_radius()
+        self.compute_centrality_measures()
         
         # Community detection
         self.detect_communities()
@@ -371,7 +482,7 @@ Generated on: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
 
 def load_graph_from_file(filepath: str, directed: bool = False) -> nx.Graph:
     """
-    Load a graph from various file formats.
+    Load a graph from various file formats, including compressed files.
     
     Args:
         filepath: Path to the graph file
@@ -380,20 +491,67 @@ def load_graph_from_file(filepath: str, directed: bool = False) -> nx.Graph:
     Returns:
         NetworkX graph object
     """
+    import gzip
+    
+    # Handle compressed .gz files
+    if filepath.endswith('.gz'):
+        filepath_uncompressed = filepath[:-3]  # Remove .gz extension
+        if not os.path.exists(filepath_uncompressed):
+            # Extract on the fly
+            with gzip.open(filepath, 'rt') as f_in:
+                with open(filepath_uncompressed, 'w') as f_out:
+                    f_out.write(f_in.read())
+            filepath = filepath_uncompressed
+        else:
+            filepath = filepath_uncompressed
+    
+    # Handle .edgelist files
     if filepath.endswith('.edgelist'):
-        return nx.read_edgelist(filepath, create_using=nx.DiGraph() if directed else nx.Graph())
+        return nx.read_edgelist(filepath, create_using=nx.DiGraph() if directed else nx.Graph(), comments='#')
+    
+    # Handle .txt files (common in SNAP datasets)
+    elif filepath.endswith('.txt'):
+        # Try reading as edgelist first (handles SNAP format with # comments)
+        try:
+            return nx.read_edgelist(filepath, create_using=nx.DiGraph() if directed else nx.Graph(), comments='#', nodetype=int)
+        except:
+            # If that fails, try reading as space/tab separated
+            try:
+                return nx.read_edgelist(filepath, create_using=nx.DiGraph() if directed else nx.Graph(), comments='#', delimiter='\t')
+            except:
+                return nx.read_edgelist(filepath, create_using=nx.DiGraph() if directed else nx.Graph(), comments='#')
+    
+    # Handle .gml files
     elif filepath.endswith('.gml'):
         return nx.read_gml(filepath)
+    
+    # Handle .graphml files
     elif filepath.endswith('.graphml'):
         return nx.read_graphml(filepath)
+    
+    # Handle .csv files
     elif filepath.endswith('.csv'):
         df = pd.read_csv(filepath)
         if 'source' in df.columns and 'target' in df.columns:
             G = nx.DiGraph() if directed else nx.Graph()
             G.add_edges_from(zip(df['source'], df['target']))
             return G
+        elif len(df.columns) >= 2:
+            # Assume first two columns are source and target
+            G = nx.DiGraph() if directed else nx.Graph()
+            G.add_edges_from(zip(df.iloc[:, 0], df.iloc[:, 1]))
+            return G
+    
+    # Handle .tsv files (tab-separated)
+    elif filepath.endswith('.tsv'):
+        return nx.read_edgelist(filepath, create_using=nx.DiGraph() if directed else nx.Graph(), comments='#', delimiter='\t')
+    
     else:
-        raise ValueError(f"Unsupported file format: {filepath}")
+        # Try to read as edgelist anyway (for files without extension)
+        try:
+            return nx.read_edgelist(filepath, create_using=nx.DiGraph() if directed else nx.Graph(), comments='#')
+        except:
+            raise ValueError(f"Unsupported file format: {filepath}. Supported formats: .edgelist, .txt, .csv, .tsv, .gml, .graphml")
 
 
 if __name__ == "__main__":

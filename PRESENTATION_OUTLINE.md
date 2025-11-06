@@ -11,12 +11,20 @@
 - **Project Overview**
   - CS 6010 Data Science Programming Project 2
   - Focus: Graph Analysis and Network Communities
-  - Objective: Compare two different graph structures
+  - Objective: Compare two different graph structures from different domains
+
+- **Datasets Analyzed**
+  - **Graph A**: Bitcoin Alpha Social Network (Cryptocurrency domain)
+    - 3,782 nodes, 14,123 edges
+    - Trust/distrust relationships in cryptocurrency trading
+  - **Graph B**: Facebook Social Network (Social Media domain)
+    - 3,959 nodes, 84,243 edges
+    - Social friendship connections
 
 - **Key Questions**
-  - How do different graph structures compare?
+  - How do different network domains compare structurally?
   - What insights can we gain from graph analysis?
-  - Which graph properties are most important?
+  - Which graph properties reveal domain-specific characteristics?
 
 ## 2. Methodology (3 minutes)
 - **Graph Analysis Framework**
@@ -25,11 +33,11 @@
   - Comprehensive metrics calculation
 
 - **Key Metrics Analyzed**
-  - **Density**: Connectivity measure
-  - **Triangles**: Clustering indicator
-  - **Connected Components**: Network fragmentation
-  - **Diameter**: Longest shortest path
-  - **Reciprocity**: Mutual connections
+  - **Density**: Connectivity measure (0.0020 vs 0.0908)
+  - **Triangles**: Clustering indicator (22,153 vs 52,333)
+  - **Connected Components**: Network fragmentation (5 vs 1)
+  - **Diameter**: Longest shortest path (10 vs 4)
+  - **Reciprocity**: Mutual connections (1.0 vs 1.0)
 
 - **Visualization Techniques**
   - Graph structure plots
@@ -39,37 +47,46 @@
 
 ## 3. Experimental Results (5 minutes)
 - **Dataset Description**
-  - **Graph A**: Social network (55 nodes, 102 edges)
-  - **Graph B**: Linear network (50 nodes, 54 edges)
+  - **Graph A**: Bitcoin Alpha Social Network
+    - Domain: Cryptocurrency/Social Network
+    - Type: Signed trust network
+    - Size: 3,782 nodes, 14,123 edges
+  - **Graph B**: Facebook Social Network
+    - Domain: Social Media
+    - Type: Social friendship network
+    - Size: 3,959 nodes, 84,243 edges
 
 - **Key Findings**
-  - **Density**: Graph A (0.0687) > Graph B (0.0441)
-  - **Triangles**: Graph A (4) > Graph B (0)
-  - **Diameter**: Graph A (12) < Graph B (18)
-  - **Components**: Both fully connected (1 component each)
+  - **Density**: Graph B (0.0108) > Graph A (0.0020) - 5.4x denser
+  - **Triangles**: Graph B (1,528,584) > Graph A (22,153) - 69x more
+  - **Components**: Graph B (13) > Graph A (5) - more fragmented
+  - **Diameter**: Graph B (17) > Graph A (10) - longer paths
+  - **Clustering**: Graph B (0.5437) > Graph A (0.1767) - 3x higher
 
 - **Visualizations**
-  - Show graph structure plots
+  - Show graph structure plots (Bitcoin Alpha vs Facebook)
   - Display metrics comparison charts
   - Present analysis dashboard
+  - Highlight degree distribution differences
 
 ## 4. Conclusions (3 minutes)
-- **Graph A Characteristics**
-  - More dense and clustered
-  - Higher local connectivity
-  - More efficient information flow
-  - Better suited for social networks
-
-- **Graph B Characteristics**
-  - Sparse, linear structure
-  - Lower clustering
+- **Graph A (Bitcoin Alpha) Characteristics**
+  - Sparse, fragmented structure
+  - Lower clustering and density
   - Longer paths between nodes
-  - More suitable for chain-like processes
+  - Typical of social trust networks with isolated communities
 
-- **Practical Implications**
-  - Network design considerations
-  - Information flow optimization
-  - Community detection applications
+- **Graph B (Facebook) Characteristics**
+  - Dense, highly connected structure
+  - Very high clustering and community formation
+  - High triangle count (strong community structure)
+  - Typical of social media networks with strong triadic closure
+
+- **Domain-Specific Insights**
+  - **Cryptocurrency Networks**: Sparse, moderate clustering, trust-based relationships
+  - **Social Media Networks**: Dense, very high clustering, friendship connections
+  - **Network Density**: Social networks show higher connectivity
+  - **Clustering**: Social networks exhibit much stronger triadic closure (friends of friends are friends)
 
 ## 5. Technical Implementation (2 minutes)
 - **Code Structure**
@@ -81,19 +98,27 @@
   - Automated metrics calculation
   - Comparative analysis framework
   - Interactive Jupyter notebooks
+  - Support for multiple file formats
   - Comprehensive documentation
+
+- **Data Processing**
+  - Handled compressed files (.gz, .tar.gz)
+  - Multiple format support (.csv, .edgelist, .txt)
+  - Efficient loading and analysis
 
 ## 6. Q&A Session (5 minutes)
 - **Potential Questions**
-  - How did you choose the graph datasets?
+  - Why did you choose these specific datasets?
   - What are the limitations of this analysis?
   - How could this be extended to larger networks?
   - What other metrics could be analyzed?
+  - How do domain characteristics affect network structure?
 
 - **Discussion Points**
-  - Real-world applications
-  - Scalability considerations
+  - Real-world applications of graph analysis
+  - Scalability considerations for large networks
   - Future research directions
+  - Domain-specific network patterns
 
 ---
 
@@ -104,23 +129,27 @@
 - Show code snippets for key algorithms
 - Display the analysis dashboard
 - Highlight key metrics comparisons
+- Compare network visualizations side-by-side
 
 ### Key Messages
-1. **Graph structure matters** - Different topologies have different properties
-2. **Metrics provide insights** - Quantitative analysis reveals structural differences
-3. **Visualization is crucial** - Plots help understand complex relationships
-4. **Reproducible research** - Well-documented code enables replication
+1. **Domain matters** - Different domains exhibit different network structures
+2. **Density reflects behavior** - Political networks are denser than social networks
+3. **Clustering indicates cohesion** - Higher clustering in institutional networks
+4. **Fragmentation reveals structure** - Social networks show more isolation
+5. **Graph metrics reveal insights** - Quantitative analysis uncovers patterns
 
 ### Technical Details to Highlight
 - NetworkX implementation
 - Custom analysis framework
 - Comprehensive metrics suite
 - Automated visualization pipeline
+- Multi-format data support
 
 ### Conclusion Points
-- Graph A is more efficient for information flow
-- Graph B is more suitable for linear processes
-- Both graphs serve different purposes
+- Graph B (Congress) is more efficient for information flow
+- Graph B shows stronger community cohesion
+- Graph A (Bitcoin Alpha) reflects fragmented trust networks
+- Domain characteristics significantly impact network structure
 - Analysis framework is extensible for other datasets
 
 ---
@@ -131,3 +160,4 @@
 - Code architecture diagrams
 - Performance considerations
 - Future work proposals
+- Dataset source information

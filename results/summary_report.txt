@@ -1,6 +1,6 @@
 
 # Graph Analysis Summary Report
-Generated on: 2025-11-01 04:08:33
+Generated on: 2025-11-05 22:14:19
 
 ## Executive Summary
 
@@ -11,23 +11,23 @@ graph metrics including density, clustering, diameter, and community detection.
 ## Key Findings
 
 ### Graph Density Analysis
-- Graph A density: 0.0687
-- Graph B density: 0.0441
-- Density difference: 0.0246
+- Graph A density: 0.0020
+- Graph B density: 0.0108
+- Density difference: -0.0088
 
 ### Triangle Analysis
-- Graph A triangles: 4
-- Graph B triangles: 0
-- Triangle difference: 4
+- Graph A triangles: 22153
+- Graph B triangles: 1528584
+- Triangle difference: -1506431
 
 ### Connected Components
-- Graph A components: 1
-- Graph B components: 1
+- Graph A components: 5
+- Graph B components: 13
 
 ### Diameter Analysis
-- Graph A diameter: 12
-- Graph B diameter: 18
-- Diameter difference: -6
+- Graph A diameter: 10
+- Graph B diameter: 17
+- Diameter difference: -7
 
 ### Reciprocity Analysis
 - Graph A reciprocity: 1.0000
@@ -38,9 +38,9 @@ graph metrics including density, clustering, diameter, and community detection.
 
 Based on the comprehensive analysis, the following conclusions can be drawn:
 
-1. **Density Comparison**: Graph A is denser than Graph B because Graph A has more connections relative to its size.
+1. **Density Comparison**: Graph B is denser than Graph A because Graph B has more connections relative to its size.
 
-2. **Triangle Analysis**: Graph A has more triangles than Graph B because Graph A has more clustered structures.
+2. **Triangle Analysis**: Graph B has more triangles than Graph A because Graph B has more clustered structures.
 
 3. **Connected Components**: Graph B has more connected components than Graph A because Graph B is more fragmented.
 

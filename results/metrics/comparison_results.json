@@ -1,21 +1,21 @@
 {
   "density": {
-    "Graph A": 0.06868686868686869,
-    "Graph B": 0.044081632653061226,
-    "difference": 0.02460523603380746,
-    "ratio": 1.5581743359521136
+    "Graph A": 0.0019752803931707297,
+    "Graph B": 0.010752328599065128,
+    "difference": -0.008777048205894398,
+    "ratio": 0.18370721978702106
   },
   "triangles": {
-    "Graph A": 4,
-    "Graph B": 0,
-    "difference": 4,
-    "ratio": Infinity
+    "Graph A": 22153,
+    "Graph B": 1528584,
+    "difference": -1506431,
+    "ratio": 0.014492497631795177
   },
   "diameter": {
-    "Graph A": 12,
-    "Graph B": 18,
-    "difference": -6,
-    "ratio": 0.6666666666666666
+    "Graph A": 10,
+    "Graph B": 17,
+    "difference": -7,
+    "ratio": 0.5882352941176471
   },
   "reciprocity": {
     "Graph A": 1.0,
@@ -24,15 +24,15 @@
     "ratio": 1.0
   },
   "clustering_coefficient": {
-    "Graph A": 0.045454545454545456,
-    "Graph B": 0.0,
-    "difference": 0.045454545454545456,
-    "ratio": Infinity
+    "Graph A": 0.17667573896503305,
+    "Graph B": 0.543726836561468,
+    "difference": -0.36705109759643495,
+    "ratio": 0.3249347412798889
   },
   "connected_components": {
-    "Graph A_num_components": 1,
-    "Graph B_num_components": 1,
-    "Graph A_largest_component": 55,
-    "Graph B_largest_component": 50
+    "Graph A_num_components": 5,
+    "Graph B_num_components": 13,
+    "Graph A_largest_component": 3774,
+    "Graph B_largest_component": 3927
   }
 }

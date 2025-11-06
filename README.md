@@ -2,7 +2,9 @@
 ## Graph Analysis and Network Communities
 
 ### Project Overview
-This project focuses on analyzing graph properties and network communities using various graph analysis techniques. The project involves comparing two different graphs and analyzing their structural properties.
+This project focuses on analyzing graph properties and network communities using various graph analysis techniques. The project compares two graphs from different domains:
+- **Graph A**: Bitcoin Alpha Social Network (Cryptocurrency domain) - 3,782 nodes, 14,123 edges
+- **Graph B**: Facebook Social Network (Social Media domain) - 3,959 nodes, 84,243 edges
 
 ### Key Graph Properties Analyzed
 - **Density**: Measure of how connected the graph is
@@ -41,12 +43,16 @@ This project focuses on analyzing graph properties and network communities using
    ```
 
 ### Usage
-1. Load your graph datasets into the `data/` directory
+1. The datasets are already loaded in `data/graph_a/` and `data/graph_b/`
 2. Run the main analysis:
    ```bash
-   python src/graph_analysis.py
+   python main_analysis.py
    ```
 3. View results in the `results/` directory
+
+### Current Datasets
+- **Graph A**: `data/graph_a/soc-sign-bitcoinalpha.csv` - Bitcoin Alpha trust network
+- **Graph B**: `data/graph_b/facebook.txt` - Facebook social network
 
 ### Dependencies
 - NetworkX: Graph analysis and manipulation

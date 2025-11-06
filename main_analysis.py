@@ -43,19 +43,59 @@ def main():
     
     # Load graphs - you can modify this section to load your specific datasets
     try:
-        # Option 1: Load from sample data
-        create_sample_data()
-        graph_a = load_graph_from_file('data/graph_a.edgelist')
-        graph_b = load_graph_from_file('data/graph_b.edgelist')
+        # Try to load from downloaded datasets first
+        graph_a = None
+        graph_b = None
         
-        # Option 2: Use synthetic graphs for demonstration
-        # graph_a, graph_b = GraphDataLoader.load_sample_graphs()
+        # Look for graph files in data/graph_a/ directory
+        graph_a_dir = 'data/graph_a'
+        if os.path.exists(graph_a_dir):
+            # Prioritize .txt, .csv, .edgelist files, exclude compressed files
+            graph_files = [f for f in os.listdir(graph_a_dir) 
+                          if not f.startswith('.') and not f.endswith(('.gz', '.tar', '.tar.gz', '.zip'))
+                          and (f.endswith(('.txt', '.csv', '.edgelist', '.tsv')) or '.' not in f)]
+            # Sort to prioritize .txt, .csv, .edgelist
+            graph_files.sort(key=lambda x: (x.endswith('.txt'), x.endswith('.csv'), x.endswith('.edgelist')), reverse=True)
+            if graph_files:
+                graph_a_file = os.path.join(graph_a_dir, graph_files[0])
+                print(f"Loading Graph A from: {graph_a_file}")
+                graph_a = load_graph_from_file(graph_a_file)
         
-        # Option 3: Use real-world graphs
-        # graph_a, graph_b = GraphDataLoader.load_real_world_graphs()
+        # Look for graph files in data/graph_b/ directory
+        graph_b_dir = 'data/graph_b'
+        if os.path.exists(graph_b_dir):
+            # Prioritize .txt, .csv, .edgelist files, exclude compressed files
+            graph_files = [f for f in os.listdir(graph_b_dir) 
+                          if not f.startswith('.') and not f.endswith(('.gz', '.tar', '.tar.gz', '.zip'))
+                          and (f.endswith(('.txt', '.csv', '.edgelist', '.tsv')) or '.' not in f)]
+            # Sort to prioritize .txt, .csv, .edgelist
+            graph_files.sort(key=lambda x: (x.endswith('.txt'), x.endswith('.csv'), x.endswith('.edgelist')), reverse=True)
+            if graph_files:
+                graph_b_file = os.path.join(graph_b_dir, graph_files[0])
+                print(f"Loading Graph B from: {graph_b_file}")
+                graph_b = load_graph_from_file(graph_b_file)
         
-        # Option 4: Use scale-free graphs
-        # graph_a, graph_b = GraphDataLoader.generate_scale_free_graphs()
+        # If graphs not found in subdirectories, try direct files
+        if graph_a is None:
+            if os.path.exists('data/graph_a.edgelist'):
+                graph_a = load_graph_from_file('data/graph_a.edgelist')
+            elif os.path.exists('data/graph_a.txt'):
+                graph_a = load_graph_from_file('data/graph_a.txt')
+        
+        if graph_b is None:
+            if os.path.exists('data/graph_b.edgelist'):
+                graph_b = load_graph_from_file('data/graph_b.edgelist')
+            elif os.path.exists('data/graph_b.txt'):
+                graph_b = load_graph_from_file('data/graph_b.txt')
+        
+        # If still not found, use sample data
+        if graph_a is None or graph_b is None:
+            print("Downloaded graphs not found. Using sample data...")
+            create_sample_data()
+            if graph_a is None:
+                graph_a = load_graph_from_file('data/graph_a.edgelist')
+            if graph_b is None:
+                graph_b = load_graph_from_file('data/graph_b.edgelist')
         
         print(f"✓ Graph A loaded: {graph_a.number_of_nodes()} nodes, {graph_a.number_of_edges()} edges")
         print(f"✓ Graph B loaded: {graph_b.number_of_nodes()} nodes, {graph_b.number_of_edges()} edges")

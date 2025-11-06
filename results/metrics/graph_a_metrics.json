@@ -1,22 +1,26 @@
 {
-  "density": 0.06868686868686869,
-  "triangles": 4,
+  "density": 0.0019752803931707297,
+  "triangles": 22153,
   "connected_components": {
-    "num_components": 1,
-    "largest_component_size": 55,
+    "num_components": 5,
+    "largest_component_size": 3774,
     "component_sizes": [
-      55
+      3774,
+      2,
+      2,
+      2,
+      2
     ],
-    "avg_component_size": 55.0
+    "avg_component_size": 756.4
   },
-  "diameter": 12,
+  "diameter": 10,
   "reciprocity": 1.0,
-  "clustering_coefficient": 0.045454545454545456,
+  "clustering_coefficient": 0.17667573896503305,
   "degree_distribution": {
-    "avg_degree": 3.709090909090909,
-    "max_degree": 4,
+    "avg_degree": 7.46853516657853,
+    "max_degree": 510,
     "min_degree": 1,
-    "degree_variance": 0.6790082644628099,
-    "degree_std": 0.824019577718157
+    "degree_variance": 401.9528703555851,
+    "degree_std": 20.048762314805998
   }
 }
