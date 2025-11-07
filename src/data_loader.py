@@ -1,26 +1,24 @@
 """
 Data loading utilities for graph datasets.
-Supports various graph formats and provides sample data generation.
+Provides sample data generation for fallback when real datasets are not available.
+Note: Main graph loading is handled by load_graph_from_file() in graph_analysis.py
 """
 
 import networkx as nx
-import pandas as pd
-import numpy as np
 import os
-from typing import Union, List, Tuple, Optional
-import urllib.request
-import zipfile
+from typing import Tuple
 
 
 class GraphDataLoader:
     """
-    Utility class for loading and generating graph datasets.
+    Utility class for generating sample graph datasets (used as fallback).
     """
     
     @staticmethod
     def load_sample_graphs() -> Tuple[nx.Graph, nx.Graph]:
         """
         Generate two sample graphs for demonstration purposes.
+        Used as fallback when real datasets are not available.
         
         Returns:
             Tuple of two NetworkX graphs
@@ -34,155 +32,12 @@ class GraphDataLoader:
         graph_b.name = "Random Graph"
         
         return graph_a, graph_b
-    
-    @staticmethod
-    def load_real_world_graphs() -> Tuple[nx.Graph, nx.Graph]:
-        """
-        Load real-world graph datasets.
-        
-        Returns:
-            Tuple of two NetworkX graphs
-        """
-        # Graph A: Karate Club network (small, well-known social network)
-        graph_a = nx.karate_club_graph()
-        graph_a.name = "Zachary's Karate Club"
-        
-        # Graph B: Florentine families network (historical social network)
-        graph_b = nx.florentine_families_graph()
-        graph_b.name = "Florentine Families"
-        
-        return graph_a, graph_b
-    
-    @staticmethod
-    def generate_scale_free_graphs() -> Tuple[nx.Graph, nx.Graph]:
-        """
-        Generate scale-free networks with different parameters.
-        
-        Returns:
-            Tuple of two NetworkX graphs
-        """
-        # Graph A: Scale-free network with high clustering
-        graph_a = nx.barabasi_albert_graph(n=200, m=3, seed=42)
-        graph_a.name = "Scale-Free Network (m=3)"
-        
-        # Graph B: Scale-free network with lower clustering
-        graph_b = nx.barabasi_albert_graph(n=200, m=1, seed=42)
-        graph_b.name = "Scale-Free Network (m=1)"
-        
-        return graph_a, graph_b
-    
-    @staticmethod
-    def load_from_edgelist(filepath: str, directed: bool = False) -> nx.Graph:
-        """
-        Load graph from edge list file.
-        
-        Args:
-            filepath: Path to edge list file
-            directed: Whether the graph is directed
-            
-        Returns:
-            NetworkX graph object
-        """
-        if directed:
-            graph = nx.read_edgelist(filepath, create_using=nx.DiGraph())
-        else:
-            graph = nx.read_edgelist(filepath)
-        
-        return graph
-    
-    @staticmethod
-    def load_from_csv(filepath: str, source_col: str = 'source', 
-                     target_col: str = 'target', directed: bool = False) -> nx.Graph:
-        """
-        Load graph from CSV file with source and target columns.
-        
-        Args:
-            filepath: Path to CSV file
-            source_col: Name of source column
-            target_col: Name of target column
-            directed: Whether the graph is directed
-            
-        Returns:
-            NetworkX graph object
-        """
-        df = pd.read_csv(filepath)
-        
-        if directed:
-            graph = nx.from_pandas_edgelist(df, source_col, target_col, create_using=nx.DiGraph())
-        else:
-            graph = nx.from_pandas_edgelist(df, source_col, target_col)
-        
-        return graph
-    
-    @staticmethod
-    def download_sample_datasets():
-        """
-        Download sample graph datasets from online sources.
-        """
-        datasets = {
-            'email_enron': 'https://snap.stanford.edu/data/email-Enron.txt.gz',
-            'facebook': 'https://snap.stanford.edu/data/facebook_combined.txt.gz',
-            'twitter': 'https://snap.stanford.edu/data/twitter_combined.txt.gz'
-        }
-        
-        data_dir = 'data'
-        os.makedirs(data_dir, exist_ok=True)
-        
-        for name, url in datasets.items():
-            filepath = os.path.join(data_dir, f"{name}.txt")
-            if not os.path.exists(filepath):
-                print(f"Downloading {name} dataset...")
-                try:
-                    urllib.request.urlretrieve(url, filepath)
-                    print(f"Downloaded {name} to {filepath}")
-                except Exception as e:
-                    print(f"Failed to download {name}: {e}")
-    
-    @staticmethod
-    def create_synthetic_graphs() -> Tuple[nx.Graph, nx.Graph]:
-        """
-        Create synthetic graphs with different properties for comparison.
-        
-        Returns:
-            Tuple of two NetworkX graphs with contrasting properties
-        """
-        # Graph A: Dense, highly connected graph
-        graph_a = nx.complete_graph(50)
-        # Remove some edges to make it less dense but still highly connected
-        edges_to_remove = np.random.choice(list(graph_a.edges()), size=200, replace=False)
-        graph_a.remove_edges_from(edges_to_remove)
-        graph_a.name = "Dense Graph"
-        
-        # Graph B: Sparse, tree-like structure
-        graph_b = nx.random_tree(50, seed=42)
-        graph_b.name = "Sparse Tree"
-        
-        return graph_a, graph_b
-    
-    @staticmethod
-    def load_custom_graphs(graph_a_path: str, graph_b_path: str, 
-                          directed_a: bool = False, directed_b: bool = False) -> Tuple[nx.Graph, nx.Graph]:
-        """
-        Load custom graphs from files.
-        
-        Args:
-            graph_a_path: Path to first graph file
-            graph_b_path: Path to second graph file
-            directed_a: Whether first graph is directed
-            directed_b: Whether second graph is directed
-            
-        Returns:
-            Tuple of two NetworkX graphs
-        """
-        graph_a = GraphDataLoader.load_from_edgelist(graph_a_path, directed_a)
-        graph_b = GraphDataLoader.load_from_edgelist(graph_b_path, directed_b)
-        
-        return graph_a, graph_b
 
 
 def create_sample_data():
     """
     Create sample graph data files for demonstration.
+    Used as fallback when real datasets are not found.
     """
     # Create sample edge lists
     data_dir = 'data'
